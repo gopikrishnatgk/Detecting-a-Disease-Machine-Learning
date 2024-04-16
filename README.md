@@ -1,2 +1,3 @@
 # Detecting-a-Disease-Machine-Learning
 Machine learning (ML) techniques have been increasingly utilized in healthcare for disease detection, diagnosis, and prognosis.
+It's important to note that while machine learning can be a powerful tool for disease detection, it is not without limitations. The performance of the model depends heavily on the quality and quantity of the data available for training, as well as the expertise of the data scientists and clinicians involved in the development process. Additionally, ethical considerations regarding data privacy, bias, and interpretability must be carefully addressed when deploying machine learning models in healthcare settings.
