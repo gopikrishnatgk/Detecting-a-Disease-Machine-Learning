@@ -98,7 +98,7 @@ svm_preds = final_svm_model.predict(test_X)
 nb_preds = final_nb_model.predict(test_X)
 rf_preds = final_rf_model.predict(test_X)
  
-final_preds = [mode([i,j,k])[0][0] for i,j,
+final_preds = [mode([i,j,k])[0] for i,j,
                k in zip(svm_preds, nb_preds, rf_preds)]
  
 print(f"Model Accuracy\
