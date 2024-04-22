@@ -1,7 +1,7 @@
 # Impport imp/required libraries
 import numpy as np
 import pandas as pd
-from scipy.stats import mode
+import statistics
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier
@@ -103,4 +103,48 @@ final_preds = [mode([i,j,k])[0] for i,j,
  
 print(f"Model Accuracy\
 : {accuracy_score(test_Y, final_preds)*100}")
+
+# symptoms dictionary
+symptoms = X.columns.values
+
+# Giving Input of symptoms into numerical form
+symptom_index = {}
+for index, value in enumerate(symptoms):
+    symptom = " ".join([i.capitalize() for i in value.split("_")])
+    symptom_index[symptom] = index
+    
+# Taking symptoms, indexes of symptoms and predictions into a dictionary variable
+data_dict = {
+    "symptom_index":symptom_index,
+    "predictions_classes":encoder.classes_
+}
+
+# Defining a function for predictions
+def predictDisease(symptoms):
+   # Separating symptoms input using comma
+    symptoms = symptoms.split(",")
+     
+    # creating input data for the models
+    input_data = [0] * len(data_dict["symptom_index"])
+    for symptom in symptoms:
+        index = data_dict["symptom_index"][symptom]
+        input_data[index] = 1
+         
+    # reshaping the input data which suits format of model
+    input_data = pd.DataFrame(np.array(input_data).reshape(1,-1), columns = X.columns.values)
+     
+    # Predictions of each classifier
+    rf_prediction = data_dict["predictions_classes"][final_rf_model.predict(input_data)[0]]
+    nb_prediction = data_dict["predictions_classes"][final_nb_model.predict(input_data)[0]]
+    svm_prediction = data_dict["predictions_classes"][final_svm_model.predict(input_data)[0]]
+     
+    # Final prediction
+    final_prediction = statistics.mode([rf_prediction, nb_prediction, svm_prediction])
+    predictions = {
+        "rf_model_prediction": rf_prediction,
+        "naive_bayes_prediction": nb_prediction,
+        "svm_model_prediction": svm_prediction,
+        "final_prediction":final_prediction
+        }
+    return predictions
 
